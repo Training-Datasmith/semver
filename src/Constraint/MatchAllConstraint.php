@@ -22,8 +22,6 @@ class MatchAllConstraint implements ConstraintInterface
     protected $prettyString;
 
     /**
-     * @param ConstraintInterface $provider
-     *
      * @return bool
      */
     public function matches(ConstraintInterface $provider)

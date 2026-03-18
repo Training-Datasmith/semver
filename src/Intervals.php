@@ -382,7 +382,7 @@ class Intervals
         }
 
         $opSortOrder = self::$opSortOrder;
-        usort($borders, function ($a, $b) use ($opSortOrder) {
+        usort($borders, function (array $a, array $b) use ($opSortOrder) {
             $order = version_compare($a['version'], $b['version']);
             if ($order === 0) {
                 return $opSortOrder[$a['operator']] - $opSortOrder[$b['operator']];

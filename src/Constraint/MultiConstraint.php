@@ -110,8 +110,6 @@ class MultiConstraint implements ConstraintInterface
     }
 
     /**
-     * @param ConstraintInterface $provider
-     *
      * @return bool
      */
     public function matches(ConstraintInterface $provider)

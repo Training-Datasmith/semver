@@ -59,11 +59,9 @@ class CompilingMatcher
     /**
      * Evaluates the expression: $constraint match $operator $version
      *
-     * @param ConstraintInterface $constraint
      * @param int                 $operator
      * @phpstan-param Constraint::OP_*  $operator
      * @param string              $version
-     *
      * @return bool
      */
     public static function match(ConstraintInterface $constraint, $operator, $version)

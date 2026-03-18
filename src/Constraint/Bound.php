@@ -68,9 +68,7 @@ class Bound
     /**
      * Compares a bound to another with a given operator.
      *
-     * @param Bound  $other
      * @param string $operator
-     *
      * @return bool
      */
     public function compareTo(Bound $other, $operator)

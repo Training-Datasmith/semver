@@ -127,8 +127,6 @@ class Constraint implements ConstraintInterface
     }
 
     /**
-     * @param ConstraintInterface $provider
-     *
      * @return bool
      */
     public function matches(ConstraintInterface $provider)
@@ -306,9 +304,7 @@ class Constraint implements ConstraintInterface
     }
 
     /**
-     * @param Constraint $provider
      * @param bool       $compareBranches
-     *
      * @return bool
      */
     public function matchSpecific(Constraint $provider, $compareBranches = false)

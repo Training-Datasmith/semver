@@ -22,7 +22,6 @@ interface ConstraintInterface
     /**
      * Checks whether the given constraint intersects in any way with this constraint
      *
-     * @param ConstraintInterface $provider
      *
      * @return bool
      */
