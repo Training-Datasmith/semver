@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -11,10 +13,10 @@
 
 namespace Composer\Semver\Constraint;
 
+use Composer\Semver\Intervals;
 use Exception;
 use LogicException;
 use PHPUnit\Framework\TestCase;
-use Composer\Semver\Intervals;
 
 class ConstraintTest extends TestCase
 {
@@ -64,108 +66,108 @@ class ConstraintTest extends TestCase
      */
     public static function successfulVersionMatches()
     {
-        return array(
+        return [
             //    require    provide
-            array('==', '2', '==', '2'),
-            array('==', '2', '<', '3'),
-            array('==', '2', '<=', '2'),
-            array('==', '2', '<=', '3'),
-            array('==', '2', '>=', '1'),
-            array('==', '2', '>=', '2'),
-            array('==', '2', '>', '1'),
-            array('==', '2', '!=', '1'),
-            array('==', '2', '!=', '3'),
+            ['==', '2', '==', '2'],
+            ['==', '2', '<', '3'],
+            ['==', '2', '<=', '2'],
+            ['==', '2', '<=', '3'],
+            ['==', '2', '>=', '1'],
+            ['==', '2', '>=', '2'],
+            ['==', '2', '>', '1'],
+            ['==', '2', '!=', '1'],
+            ['==', '2', '!=', '3'],
 
-            array('<', '2', '==', '1'),
-            array('<', '2', '<', '1'),
-            array('<', '2', '<', '2'),
-            array('<', '2', '<', '3'),
-            array('<', '2', '<=', '1'),
-            array('<', '2', '<=', '2'),
-            array('<', '2', '<=', '3'),
-            array('<', '2', '>=', '1'),
-            array('<', '2', '>', '1'),
-            array('<', '2', '!=', '1'),
-            array('<', '2', '!=', '2'),
-            array('<', '2', '!=', '3'),
+            ['<', '2', '==', '1'],
+            ['<', '2', '<', '1'],
+            ['<', '2', '<', '2'],
+            ['<', '2', '<', '3'],
+            ['<', '2', '<=', '1'],
+            ['<', '2', '<=', '2'],
+            ['<', '2', '<=', '3'],
+            ['<', '2', '>=', '1'],
+            ['<', '2', '>', '1'],
+            ['<', '2', '!=', '1'],
+            ['<', '2', '!=', '2'],
+            ['<', '2', '!=', '3'],
 
-            array('<=', '2', '==', '1'),
-            array('<=', '2', '==', '2'),
-            array('<=', '2', '<', '1'),
-            array('<=', '2', '<', '2'),
-            array('<=', '2', '<', '3'),
-            array('<=', '2', '<=', '1'),
-            array('<=', '2', '<=', '2'),
-            array('<=', '2', '<=', '3'),
-            array('<=', '2', '>=', '1'),
-            array('<=', '2', '>=', '2'),
-            array('<=', '2', '>', '1'),
-            array('<=', '2', '!=', '1'),
-            array('<=', '2', '!=', '2'),
-            array('<=', '2', '!=', '3'),
+            ['<=', '2', '==', '1'],
+            ['<=', '2', '==', '2'],
+            ['<=', '2', '<', '1'],
+            ['<=', '2', '<', '2'],
+            ['<=', '2', '<', '3'],
+            ['<=', '2', '<=', '1'],
+            ['<=', '2', '<=', '2'],
+            ['<=', '2', '<=', '3'],
+            ['<=', '2', '>=', '1'],
+            ['<=', '2', '>=', '2'],
+            ['<=', '2', '>', '1'],
+            ['<=', '2', '!=', '1'],
+            ['<=', '2', '!=', '2'],
+            ['<=', '2', '!=', '3'],
 
-            array('>=', '2', '==', '2'),
-            array('>=', '2', '==', '3'),
-            array('>=', '2', '<', '3'),
-            array('>=', '2', '<=', '2'),
-            array('>=', '2', '<=', '3'),
-            array('>=', '2', '>=', '1'),
-            array('>=', '2', '>=', '2'),
-            array('>=', '2', '>=', '3'),
-            array('>=', '2', '>', '1'),
-            array('>=', '2', '>', '2'),
-            array('>=', '2', '>', '3'),
-            array('>=', '2', '!=', '1'),
-            array('>=', '2', '!=', '2'),
-            array('>=', '2', '!=', '3'),
+            ['>=', '2', '==', '2'],
+            ['>=', '2', '==', '3'],
+            ['>=', '2', '<', '3'],
+            ['>=', '2', '<=', '2'],
+            ['>=', '2', '<=', '3'],
+            ['>=', '2', '>=', '1'],
+            ['>=', '2', '>=', '2'],
+            ['>=', '2', '>=', '3'],
+            ['>=', '2', '>', '1'],
+            ['>=', '2', '>', '2'],
+            ['>=', '2', '>', '3'],
+            ['>=', '2', '!=', '1'],
+            ['>=', '2', '!=', '2'],
+            ['>=', '2', '!=', '3'],
 
-            array('>', '2', '==', '3'),
-            array('>', '2', '<', '3'),
-            array('>', '2', '<=', '3'),
-            array('>', '2', '>=', '1'),
-            array('>', '2', '>=', '2'),
-            array('>', '2', '>=', '3'),
-            array('>', '2', '>', '1'),
-            array('>', '2', '>', '2'),
-            array('>', '2', '>', '3'),
-            array('>', '2', '!=', '1'),
-            array('>', '2', '!=', '2'),
-            array('>', '2', '!=', '3'),
+            ['>', '2', '==', '3'],
+            ['>', '2', '<', '3'],
+            ['>', '2', '<=', '3'],
+            ['>', '2', '>=', '1'],
+            ['>', '2', '>=', '2'],
+            ['>', '2', '>=', '3'],
+            ['>', '2', '>', '1'],
+            ['>', '2', '>', '2'],
+            ['>', '2', '>', '3'],
+            ['>', '2', '!=', '1'],
+            ['>', '2', '!=', '2'],
+            ['>', '2', '!=', '3'],
 
-            array('!=', '2', '!=', '1'),
-            array('!=', '2', '!=', '2'),
-            array('!=', '2', '!=', '3'),
-            array('!=', '2', '==', '1'),
-            array('!=', '2', '==', '3'),
-            array('!=', '2', '<', '1'),
-            array('!=', '2', '<', '2'),
-            array('!=', '2', '<', '3'),
-            array('!=', '2', '<=', '1'),
-            array('!=', '2', '<=', '2'),
-            array('!=', '2', '<=', '3'),
-            array('!=', '2', '>=', '1'),
-            array('!=', '2', '>=', '2'),
-            array('!=', '2', '>=', '3'),
-            array('!=', '2', '>', '1'),
-            array('!=', '2', '>', '2'),
-            array('!=', '2', '>', '3'),
+            ['!=', '2', '!=', '1'],
+            ['!=', '2', '!=', '2'],
+            ['!=', '2', '!=', '3'],
+            ['!=', '2', '==', '1'],
+            ['!=', '2', '==', '3'],
+            ['!=', '2', '<', '1'],
+            ['!=', '2', '<', '2'],
+            ['!=', '2', '<', '3'],
+            ['!=', '2', '<=', '1'],
+            ['!=', '2', '<=', '2'],
+            ['!=', '2', '<=', '3'],
+            ['!=', '2', '>=', '1'],
+            ['!=', '2', '>=', '2'],
+            ['!=', '2', '>=', '3'],
+            ['!=', '2', '>', '1'],
+            ['!=', '2', '>', '2'],
+            ['!=', '2', '>', '3'],
 
             // branch names
-            array('==', 'dev-foo-bar', '==', 'dev-foo-bar'),
-            array('==', 'dev-events+issue-17', '==', 'dev-events+issue-17'),
-            array('==', 'dev-foo-bar', '!=', 'dev-foo-xyz'),
+            ['==', 'dev-foo-bar', '==', 'dev-foo-bar'],
+            ['==', 'dev-events+issue-17', '==', 'dev-events+issue-17'],
+            ['==', 'dev-foo-bar', '!=', 'dev-foo-xyz'],
 
-            array('!=', 'dev-foo-bar', '!=', 'dev-foo-xyz'),
+            ['!=', 'dev-foo-bar', '!=', 'dev-foo-xyz'],
 
             // numbers vs branches
-            array('==', '0.12', '!=', 'dev-foo'),
-            array('<', '0.12', '!=', 'dev-foo'),
-            array('<=', '0.12', '!=', 'dev-foo'),
-            array('>=', '0.12', '!=', 'dev-foo'),
-            array('>', '0.12', '!=', 'dev-foo'),
-            array('!=', '0.12', '==', 'dev-foo'),
-            array('!=', '0.12', '!=', 'dev-foo'),
-        );
+            ['==', '0.12', '!=', 'dev-foo'],
+            ['<', '0.12', '!=', 'dev-foo'],
+            ['<=', '0.12', '!=', 'dev-foo'],
+            ['>=', '0.12', '!=', 'dev-foo'],
+            ['>', '0.12', '!=', 'dev-foo'],
+            ['!=', '0.12', '==', 'dev-foo'],
+            ['!=', '0.12', '!=', 'dev-foo'],
+        ];
     }
 
     /**
@@ -196,153 +198,153 @@ class ConstraintTest extends TestCase
      */
     public static function failingVersionMatches()
     {
-        return array(
+        return [
             //    require    provide
-            array('==', '2', '==', '1'),
-            array('==', '2', '==', '3'),
-            array('==', '2', '<', '1'),
-            array('==', '2', '<', '2'),
-            array('==', '2', '<=', '1'),
-            array('==', '2', '>=', '3'),
-            array('==', '2', '>', '2'),
-            array('==', '2', '>', '3'),
-            array('==', '2', '!=', '2'),
+            ['==', '2', '==', '1'],
+            ['==', '2', '==', '3'],
+            ['==', '2', '<', '1'],
+            ['==', '2', '<', '2'],
+            ['==', '2', '<=', '1'],
+            ['==', '2', '>=', '3'],
+            ['==', '2', '>', '2'],
+            ['==', '2', '>', '3'],
+            ['==', '2', '!=', '2'],
 
-            array('<', '2', '==', '2'),
-            array('<', '2', '==', '3'),
-            array('<', '2', '>=', '2'),
-            array('<', '2', '>=', '3'),
-            array('<', '2', '>', '2'),
-            array('<', '2', '>', '3'),
+            ['<', '2', '==', '2'],
+            ['<', '2', '==', '3'],
+            ['<', '2', '>=', '2'],
+            ['<', '2', '>=', '3'],
+            ['<', '2', '>', '2'],
+            ['<', '2', '>', '3'],
 
-            array('<=', '2', '==', '3'),
-            array('<=', '2', '>=', '3'),
-            array('<=', '2', '>', '2'),
-            array('<=', '2', '>', '3'),
+            ['<=', '2', '==', '3'],
+            ['<=', '2', '>=', '3'],
+            ['<=', '2', '>', '2'],
+            ['<=', '2', '>', '3'],
 
-            array('>=', '2', '==', '1'),
-            array('>=', '2', '<', '1'),
-            array('>=', '2', '<', '2'),
-            array('>=', '2', '<=', '1'),
+            ['>=', '2', '==', '1'],
+            ['>=', '2', '<', '1'],
+            ['>=', '2', '<', '2'],
+            ['>=', '2', '<=', '1'],
 
-            array('>', '2', '==', '1'),
-            array('>', '2', '==', '2'),
-            array('>', '2', '<', '1'),
-            array('>', '2', '<', '2'),
-            array('>', '2', '<=', '1'),
-            array('>', '2', '<=', '2'),
+            ['>', '2', '==', '1'],
+            ['>', '2', '==', '2'],
+            ['>', '2', '<', '1'],
+            ['>', '2', '<', '2'],
+            ['>', '2', '<=', '1'],
+            ['>', '2', '<=', '2'],
 
-            array('!=', '2', '==', '2'),
+            ['!=', '2', '==', '2'],
 
-            array('==', '2.0-b2', '<', '2.0-beta2'),
-            array('==', 'dev-foo-dist', '==', 'dev-foo-zist'),
+            ['==', '2.0-b2', '<', '2.0-beta2'],
+            ['==', 'dev-foo-dist', '==', 'dev-foo-zist'],
 
             // different branch names
-            array('==', 'dev-foo-bar', '==', 'dev-foo-xyz'),
-            array('==', 'dev-foo-bar', '<', 'dev-foo-xyz'),
-            array('==', 'dev-foo-bar', '<=', 'dev-foo-xyz'),
-            array('==', 'dev-foo-bar', '>=', 'dev-foo-xyz'),
-            array('==', 'dev-foo-bar', '>', 'dev-foo-xyz'),
+            ['==', 'dev-foo-bar', '==', 'dev-foo-xyz'],
+            ['==', 'dev-foo-bar', '<', 'dev-foo-xyz'],
+            ['==', 'dev-foo-bar', '<=', 'dev-foo-xyz'],
+            ['==', 'dev-foo-bar', '>=', 'dev-foo-xyz'],
+            ['==', 'dev-foo-bar', '>', 'dev-foo-xyz'],
 
-            array('<', 'dev-foo-bar', '==', 'dev-foo-xyz'),
-            array('<', 'dev-foo-bar', '<', 'dev-foo-xyz'),
-            array('<', 'dev-foo-bar', '<=', 'dev-foo-xyz'),
-            array('<', 'dev-foo-bar', '>=', 'dev-foo-xyz'),
-            array('<', 'dev-foo-bar', '>', 'dev-foo-xyz'),
-            array('<', 'dev-foo-bar', '!=', 'dev-foo-xyz'),
+            ['<', 'dev-foo-bar', '==', 'dev-foo-xyz'],
+            ['<', 'dev-foo-bar', '<', 'dev-foo-xyz'],
+            ['<', 'dev-foo-bar', '<=', 'dev-foo-xyz'],
+            ['<', 'dev-foo-bar', '>=', 'dev-foo-xyz'],
+            ['<', 'dev-foo-bar', '>', 'dev-foo-xyz'],
+            ['<', 'dev-foo-bar', '!=', 'dev-foo-xyz'],
 
-            array('<=', 'dev-foo-bar', '==', 'dev-foo-xyz'),
-            array('<=', 'dev-foo-bar', '<', 'dev-foo-xyz'),
-            array('<=', 'dev-foo-bar', '<=', 'dev-foo-xyz'),
-            array('<=', 'dev-foo-bar', '>=', 'dev-foo-xyz'),
-            array('<=', 'dev-foo-bar', '>', 'dev-foo-xyz'),
-            array('<=', 'dev-foo-bar', '!=', 'dev-foo-xyz'),
+            ['<=', 'dev-foo-bar', '==', 'dev-foo-xyz'],
+            ['<=', 'dev-foo-bar', '<', 'dev-foo-xyz'],
+            ['<=', 'dev-foo-bar', '<=', 'dev-foo-xyz'],
+            ['<=', 'dev-foo-bar', '>=', 'dev-foo-xyz'],
+            ['<=', 'dev-foo-bar', '>', 'dev-foo-xyz'],
+            ['<=', 'dev-foo-bar', '!=', 'dev-foo-xyz'],
 
-            array('>=', 'dev-foo-bar', '==', 'dev-foo-xyz'),
-            array('>=', 'dev-foo-bar', '<', 'dev-foo-xyz'),
-            array('>=', 'dev-foo-bar', '<=', 'dev-foo-xyz'),
-            array('>=', 'dev-foo-bar', '>=', 'dev-foo-xyz'),
-            array('>=', 'dev-foo-bar', '>', 'dev-foo-xyz'),
-            array('>=', 'dev-foo-bar', '!=', 'dev-foo-xyz'),
+            ['>=', 'dev-foo-bar', '==', 'dev-foo-xyz'],
+            ['>=', 'dev-foo-bar', '<', 'dev-foo-xyz'],
+            ['>=', 'dev-foo-bar', '<=', 'dev-foo-xyz'],
+            ['>=', 'dev-foo-bar', '>=', 'dev-foo-xyz'],
+            ['>=', 'dev-foo-bar', '>', 'dev-foo-xyz'],
+            ['>=', 'dev-foo-bar', '!=', 'dev-foo-xyz'],
 
-            array('>', 'dev-foo-bar', '==', 'dev-foo-xyz'),
-            array('>', 'dev-foo-bar', '<', 'dev-foo-xyz'),
-            array('>', 'dev-foo-bar', '<=', 'dev-foo-xyz'),
-            array('>', 'dev-foo-bar', '>=', 'dev-foo-xyz'),
-            array('>', 'dev-foo-bar', '>', 'dev-foo-xyz'),
-            array('>', 'dev-foo-bar', '!=', 'dev-foo-xyz'),
+            ['>', 'dev-foo-bar', '==', 'dev-foo-xyz'],
+            ['>', 'dev-foo-bar', '<', 'dev-foo-xyz'],
+            ['>', 'dev-foo-bar', '<=', 'dev-foo-xyz'],
+            ['>', 'dev-foo-bar', '>=', 'dev-foo-xyz'],
+            ['>', 'dev-foo-bar', '>', 'dev-foo-xyz'],
+            ['>', 'dev-foo-bar', '!=', 'dev-foo-xyz'],
 
             // same branch names
-            array('==', 'dev-foo-bar', '<', 'dev-foo-bar'),
-            array('==', 'dev-foo-bar', '<=', 'dev-foo-bar'),
-            array('==', 'dev-foo-bar', '>=', 'dev-foo-bar'),
-            array('==', 'dev-foo-bar', '>', 'dev-foo-bar'),
-            array('==', 'dev-foo-bar', '!=', 'dev-foo-bar'),
+            ['==', 'dev-foo-bar', '<', 'dev-foo-bar'],
+            ['==', 'dev-foo-bar', '<=', 'dev-foo-bar'],
+            ['==', 'dev-foo-bar', '>=', 'dev-foo-bar'],
+            ['==', 'dev-foo-bar', '>', 'dev-foo-bar'],
+            ['==', 'dev-foo-bar', '!=', 'dev-foo-bar'],
 
-            array('<', 'dev-foo-bar', '==', 'dev-foo-bar'),
-            array('<', 'dev-foo-bar', '<', 'dev-foo-bar'),
-            array('<', 'dev-foo-bar', '<=', 'dev-foo-bar'),
-            array('<', 'dev-foo-bar', '>=', 'dev-foo-bar'),
-            array('<', 'dev-foo-bar', '>', 'dev-foo-bar'),
-            array('<', 'dev-foo-bar', '!=', 'dev-foo-bar'),
+            ['<', 'dev-foo-bar', '==', 'dev-foo-bar'],
+            ['<', 'dev-foo-bar', '<', 'dev-foo-bar'],
+            ['<', 'dev-foo-bar', '<=', 'dev-foo-bar'],
+            ['<', 'dev-foo-bar', '>=', 'dev-foo-bar'],
+            ['<', 'dev-foo-bar', '>', 'dev-foo-bar'],
+            ['<', 'dev-foo-bar', '!=', 'dev-foo-bar'],
 
-            array('<=', 'dev-foo-bar', '==', 'dev-foo-bar'),
-            array('<=', 'dev-foo-bar', '<', 'dev-foo-bar'),
-            array('<=', 'dev-foo-bar', '<=', 'dev-foo-bar'),
-            array('<=', 'dev-foo-bar', '>=', 'dev-foo-bar'),
-            array('<=', 'dev-foo-bar', '>', 'dev-foo-bar'),
-            array('<=', 'dev-foo-bar', '!=', 'dev-foo-bar'),
+            ['<=', 'dev-foo-bar', '==', 'dev-foo-bar'],
+            ['<=', 'dev-foo-bar', '<', 'dev-foo-bar'],
+            ['<=', 'dev-foo-bar', '<=', 'dev-foo-bar'],
+            ['<=', 'dev-foo-bar', '>=', 'dev-foo-bar'],
+            ['<=', 'dev-foo-bar', '>', 'dev-foo-bar'],
+            ['<=', 'dev-foo-bar', '!=', 'dev-foo-bar'],
 
-            array('>=', 'dev-foo-bar', '==', 'dev-foo-bar'),
-            array('>=', 'dev-foo-bar', '<', 'dev-foo-bar'),
-            array('>=', 'dev-foo-bar', '<=', 'dev-foo-bar'),
-            array('>=', 'dev-foo-bar', '>=', 'dev-foo-bar'),
-            array('>=', 'dev-foo-bar', '>', 'dev-foo-bar'),
-            array('>=', 'dev-foo-bar', '!=', 'dev-foo-bar'),
+            ['>=', 'dev-foo-bar', '==', 'dev-foo-bar'],
+            ['>=', 'dev-foo-bar', '<', 'dev-foo-bar'],
+            ['>=', 'dev-foo-bar', '<=', 'dev-foo-bar'],
+            ['>=', 'dev-foo-bar', '>=', 'dev-foo-bar'],
+            ['>=', 'dev-foo-bar', '>', 'dev-foo-bar'],
+            ['>=', 'dev-foo-bar', '!=', 'dev-foo-bar'],
 
-            array('>', 'dev-foo-bar', '==', 'dev-foo-bar'),
-            array('>', 'dev-foo-bar', '<', 'dev-foo-bar'),
-            array('>', 'dev-foo-bar', '<=', 'dev-foo-bar'),
-            array('>', 'dev-foo-bar', '>=', 'dev-foo-bar'),
-            array('>', 'dev-foo-bar', '>', 'dev-foo-bar'),
-            array('>', 'dev-foo-bar', '!=', 'dev-foo-bar'),
+            ['>', 'dev-foo-bar', '==', 'dev-foo-bar'],
+            ['>', 'dev-foo-bar', '<', 'dev-foo-bar'],
+            ['>', 'dev-foo-bar', '<=', 'dev-foo-bar'],
+            ['>', 'dev-foo-bar', '>=', 'dev-foo-bar'],
+            ['>', 'dev-foo-bar', '>', 'dev-foo-bar'],
+            ['>', 'dev-foo-bar', '!=', 'dev-foo-bar'],
 
             // branch vs number, not comparable so mostly false
-            array('==', '0.12', '==', 'dev-foo'),
-            array('==', '0.12', '<', 'dev-foo'),
-            array('==', '0.12', '<=', 'dev-foo'),
-            array('==', '0.12', '>=', 'dev-foo'),
-            array('==', '0.12', '>', 'dev-foo'),
+            ['==', '0.12', '==', 'dev-foo'],
+            ['==', '0.12', '<', 'dev-foo'],
+            ['==', '0.12', '<=', 'dev-foo'],
+            ['==', '0.12', '>=', 'dev-foo'],
+            ['==', '0.12', '>', 'dev-foo'],
 
-            array('<', '0.12', '==', 'dev-foo'),
-            array('<', '0.12', '<', 'dev-foo'),
-            array('<', '0.12', '<=', 'dev-foo'),
-            array('<', '0.12', '>=', 'dev-foo'),
-            array('<', '0.12', '>', 'dev-foo'),
+            ['<', '0.12', '==', 'dev-foo'],
+            ['<', '0.12', '<', 'dev-foo'],
+            ['<', '0.12', '<=', 'dev-foo'],
+            ['<', '0.12', '>=', 'dev-foo'],
+            ['<', '0.12', '>', 'dev-foo'],
 
-            array('<=', '0.12', '==', 'dev-foo'),
-            array('<=', '0.12', '<', 'dev-foo'),
-            array('<=', '0.12', '<=', 'dev-foo'),
-            array('<=', '0.12', '>=', 'dev-foo'),
-            array('<=', '0.12', '>', 'dev-foo'),
+            ['<=', '0.12', '==', 'dev-foo'],
+            ['<=', '0.12', '<', 'dev-foo'],
+            ['<=', '0.12', '<=', 'dev-foo'],
+            ['<=', '0.12', '>=', 'dev-foo'],
+            ['<=', '0.12', '>', 'dev-foo'],
 
-            array('>=', '0.12', '==', 'dev-foo'),
-            array('>=', '0.12', '<', 'dev-foo'),
-            array('>=', '0.12', '<=', 'dev-foo'),
-            array('>=', '0.12', '>=', 'dev-foo'),
-            array('>=', '0.12', '>', 'dev-foo'),
+            ['>=', '0.12', '==', 'dev-foo'],
+            ['>=', '0.12', '<', 'dev-foo'],
+            ['>=', '0.12', '<=', 'dev-foo'],
+            ['>=', '0.12', '>=', 'dev-foo'],
+            ['>=', '0.12', '>', 'dev-foo'],
 
-            array('>', '0.12', '==', 'dev-foo'),
-            array('>', '0.12', '<', 'dev-foo'),
-            array('>', '0.12', '<=', 'dev-foo'),
-            array('>', '0.12', '>=', 'dev-foo'),
-            array('>', '0.12', '>', 'dev-foo'),
+            ['>', '0.12', '==', 'dev-foo'],
+            ['>', '0.12', '<', 'dev-foo'],
+            ['>', '0.12', '<=', 'dev-foo'],
+            ['>', '0.12', '>=', 'dev-foo'],
+            ['>', '0.12', '>', 'dev-foo'],
 
-            array('!=', '0.12', '<', 'dev-foo'),
-            array('!=', '0.12', '<=', 'dev-foo'),
-            array('!=', '0.12', '>=', 'dev-foo'),
-            array('!=', '0.12', '>', 'dev-foo'),
-        );
+            ['!=', '0.12', '<', 'dev-foo'],
+            ['!=', '0.12', '<=', 'dev-foo'],
+            ['!=', '0.12', '>=', 'dev-foo'],
+            ['!=', '0.12', '>', 'dev-foo'],
+        ];
     }
 
     /**
@@ -379,18 +381,18 @@ class ConstraintTest extends TestCase
     public function testInverseMatchingOtherConstraints()
     {
         $constraint = new Constraint('>', '1.0.0');
-        $otherConstraintClasses = array(
+        $otherConstraintClasses = [
             'Composer\Semver\Constraint\MultiConstraint',
-            'Composer\Semver\Constraint\MatchAllConstraint'
-        );
+            'Composer\Semver\Constraint\MatchAllConstraint',
+        ];
 
         foreach ($otherConstraintClasses as $otherConstraintClass) {
             $otherConstraintMockBuilder =  $this->getMockBuilder($otherConstraintClass);
             $otherConstraintMockBuilder->disableOriginalConstructor();
             if (method_exists($otherConstraintMockBuilder, 'onlyMethods')) {
-                $otherConstraintMockBuilder->onlyMethods(array('matches'));
+                $otherConstraintMockBuilder->onlyMethods(['matches']);
             } elseif (method_exists($otherConstraintMockBuilder, 'setMethods')) {
-                $otherConstraintMockBuilder->setMethods(array('matches'));
+                $otherConstraintMockBuilder->setMethods(['matches']);
             }
             $otherConstraintMock = $otherConstraintMockBuilder->getMock();
             $otherConstraintMock
@@ -442,11 +444,11 @@ class ConstraintTest extends TestCase
      */
     public static function invalidOperators()
     {
-        return array(
-            array('1.2.3', 'invalid', 'InvalidArgumentException'),
-            array('1.2.3', '!', 'InvalidArgumentException'),
-            array('1.2.3', 'equals', 'InvalidArgumentException'),
-        );
+        return [
+            ['1.2.3', 'invalid', 'InvalidArgumentException'],
+            ['1.2.3', '!', 'InvalidArgumentException'],
+            ['1.2.3', 'equals', 'InvalidArgumentException'],
+        ];
     }
 
     /**
@@ -470,41 +472,41 @@ class ConstraintTest extends TestCase
      */
     public static function bounds()
     {
-        return array(
-            'equal to 1.0.0.0' => array('==', '1.0.0.0', new Bound('1.0.0.0', true), new Bound('1.0.0.0', true)),
-            'equal to 1.0.0.0-rc3' => array('==', '1.0.0.0-rc3', new Bound('1.0.0.0-rc3', true), new Bound('1.0.0.0-rc3', true)),
-            'equal to dev-feature-branch' => array('>=', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()),
+        return [
+            'equal to 1.0.0.0' => ['==', '1.0.0.0', new Bound('1.0.0.0', true), new Bound('1.0.0.0', true)],
+            'equal to 1.0.0.0-rc3' => ['==', '1.0.0.0-rc3', new Bound('1.0.0.0-rc3', true), new Bound('1.0.0.0-rc3', true)],
+            'equal to dev-feature-branch' => ['>=', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()],
 
-            'lower than 0.0.4.0' => array('<', '0.0.4.0', Bound::zero(), new Bound('0.0.4.0', false)),
-            'lower than 1.0.0.0' => array('<', '1.0.0.0', Bound::zero(), new Bound('1.0.0.0', false)),
-            'lower than 2.0.0.0' => array('<', '2.0.0.0', Bound::zero(), new Bound('2.0.0.0', false)),
-            'lower than 3.0.3.0' => array('<', '3.0.3.0', Bound::zero(), new Bound('3.0.3.0', false)),
-            'lower than 3.0.3.0-rc3' => array('<', '3.0.3.0-rc3', Bound::zero(), new Bound('3.0.3.0-rc3', false)),
-            'lower than dev-feature-branch' => array('<', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()),
+            'lower than 0.0.4.0' => ['<', '0.0.4.0', Bound::zero(), new Bound('0.0.4.0', false)],
+            'lower than 1.0.0.0' => ['<', '1.0.0.0', Bound::zero(), new Bound('1.0.0.0', false)],
+            'lower than 2.0.0.0' => ['<', '2.0.0.0', Bound::zero(), new Bound('2.0.0.0', false)],
+            'lower than 3.0.3.0' => ['<', '3.0.3.0', Bound::zero(), new Bound('3.0.3.0', false)],
+            'lower than 3.0.3.0-rc3' => ['<', '3.0.3.0-rc3', Bound::zero(), new Bound('3.0.3.0-rc3', false)],
+            'lower than dev-feature-branch' => ['<', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()],
 
-            'greater than 0.0.4.0' => array('>', '0.0.4.0', new Bound('0.0.4.0', false), Bound::positiveInfinity()),
-            'greater than 1.0.0.0' => array('>', '1.0.0.0', new Bound('1.0.0.0', false), Bound::positiveInfinity()),
-            'greater than 2.0.0.0' => array('>', '2.0.0.0', new Bound('2.0.0.0', false), Bound::positiveInfinity()),
-            'greater than 3.0.3.0' => array('>', '3.0.3.0', new Bound('3.0.3.0', false), Bound::positiveInfinity()),
-            'greater than 3.0.3.0-rc3' => array('>', '3.0.3.0-rc3', new Bound('3.0.3.0-rc3', false), Bound::positiveInfinity()),
-            'greater than dev-feature-branch' => array('>', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()),
+            'greater than 0.0.4.0' => ['>', '0.0.4.0', new Bound('0.0.4.0', false), Bound::positiveInfinity()],
+            'greater than 1.0.0.0' => ['>', '1.0.0.0', new Bound('1.0.0.0', false), Bound::positiveInfinity()],
+            'greater than 2.0.0.0' => ['>', '2.0.0.0', new Bound('2.0.0.0', false), Bound::positiveInfinity()],
+            'greater than 3.0.3.0' => ['>', '3.0.3.0', new Bound('3.0.3.0', false), Bound::positiveInfinity()],
+            'greater than 3.0.3.0-rc3' => ['>', '3.0.3.0-rc3', new Bound('3.0.3.0-rc3', false), Bound::positiveInfinity()],
+            'greater than dev-feature-branch' => ['>', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()],
 
-            'lower than or equal to 0.0.4.0' => array('<=', '0.0.4.0', Bound::zero(), new Bound('0.0.4.0', true)),
-            'lower than or equal to 1.0.0.0' => array('<=', '1.0.0.0', Bound::zero(), new Bound('1.0.0.0', true)),
-            'lower than or equal to 2.0.0.0' => array('<=', '2.0.0.0', Bound::zero(), new Bound('2.0.0.0', true)),
-            'lower than or equal to 3.0.3.0' => array('<=', '3.0.3.0', Bound::zero(), new Bound('3.0.3.0', true)),
-            'lower than or equal to 3.0.3.0-rc3' => array('<=', '3.0.3.0-rc3', Bound::zero(), new Bound('3.0.3.0-rc3', true)),
-            'lower than or equal to dev-feature-branch' => array('<=', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()),
+            'lower than or equal to 0.0.4.0' => ['<=', '0.0.4.0', Bound::zero(), new Bound('0.0.4.0', true)],
+            'lower than or equal to 1.0.0.0' => ['<=', '1.0.0.0', Bound::zero(), new Bound('1.0.0.0', true)],
+            'lower than or equal to 2.0.0.0' => ['<=', '2.0.0.0', Bound::zero(), new Bound('2.0.0.0', true)],
+            'lower than or equal to 3.0.3.0' => ['<=', '3.0.3.0', Bound::zero(), new Bound('3.0.3.0', true)],
+            'lower than or equal to 3.0.3.0-rc3' => ['<=', '3.0.3.0-rc3', Bound::zero(), new Bound('3.0.3.0-rc3', true)],
+            'lower than or equal to dev-feature-branch' => ['<=', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()],
 
-            'greater than or equal to 0.0.4.0' => array('>=', '0.0.4.0', new Bound('0.0.4.0', true), Bound::positiveInfinity()),
-            'greater than or equal to 1.0.0.0' => array('>=', '1.0.0.0', new Bound('1.0.0.0', true), Bound::positiveInfinity()),
-            'greater than or equal to 2.0.0.0' => array('>=', '2.0.0.0', new Bound('2.0.0.0', true), Bound::positiveInfinity()),
-            'greater than or equal to 3.0.3.0' => array('>=', '3.0.3.0', new Bound('3.0.3.0', true), Bound::positiveInfinity()),
-            'greater than or equal to 3.0.3.0-rc3' => array('>=', '3.0.3.0-rc3', new Bound('3.0.3.0-rc3', true), Bound::positiveInfinity()),
-            'greater than or equal to dev-feature-branch' => array('>=', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()),
+            'greater than or equal to 0.0.4.0' => ['>=', '0.0.4.0', new Bound('0.0.4.0', true), Bound::positiveInfinity()],
+            'greater than or equal to 1.0.0.0' => ['>=', '1.0.0.0', new Bound('1.0.0.0', true), Bound::positiveInfinity()],
+            'greater than or equal to 2.0.0.0' => ['>=', '2.0.0.0', new Bound('2.0.0.0', true), Bound::positiveInfinity()],
+            'greater than or equal to 3.0.3.0' => ['>=', '3.0.3.0', new Bound('3.0.3.0', true), Bound::positiveInfinity()],
+            'greater than or equal to 3.0.3.0-rc3' => ['>=', '3.0.3.0-rc3', new Bound('3.0.3.0-rc3', true), Bound::positiveInfinity()],
+            'greater than or equal to dev-feature-branch' => ['>=', 'dev-feature-branch', Bound::zero(), Bound::positiveInfinity()],
 
-            'not equal to 1.0.0.0' => array('<>', '1.0.0.0', Bound::zero(), Bound::positiveInfinity()),
-        );
+            'not equal to 1.0.0.0' => ['<>', '1.0.0.0', Bound::zero(), Bound::positiveInfinity()],
+        ];
     }
 
     /**
@@ -539,15 +541,15 @@ class ConstraintTest extends TestCase
      */
     public static function matrix()
     {
-        $versions = array('1.0', '2.0', 'dev-master', 'dev-foo', '3.0-b2', '3.0-beta2');
-        $operators = array('==', '!=', '>', '<', '>=', '<=');
+        $versions = ['1.0', '2.0', 'dev-master', 'dev-foo', '3.0-b2', '3.0-beta2'];
+        $operators = ['==', '!=', '>', '<', '>=', '<='];
 
-        $matrix = array();
+        $matrix = [];
         foreach ($versions as $requireVersion) {
             foreach ($operators as $requireOperator) {
                 foreach ($versions as $provideVersion) {
                     foreach ($operators as $provideOperator) {
-                        $matrix[] = array($requireOperator, $requireVersion, $provideOperator, $provideVersion);
+                        $matrix[] = [$requireOperator, $requireVersion, $provideOperator, $provideVersion];
                     }
                 }
             }
@@ -563,7 +565,7 @@ class ConstraintTest extends TestCase
      */
     private function matchCompiled(ConstraintInterface $constraint, $operator, $version)
     {
-        $map = array(
+        $map = [
             '=' => Constraint::OP_EQ,
             '==' => Constraint::OP_EQ,
             '<' => Constraint::OP_LT,
@@ -572,7 +574,7 @@ class ConstraintTest extends TestCase
             '>=' => Constraint::OP_GE,
             '<>' => Constraint::OP_NE,
             '!=' => Constraint::OP_NE,
-        );
+        ];
 
         $code = $constraint->compile($map[$operator]);
         $v = $version;

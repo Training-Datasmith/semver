@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -84,7 +86,7 @@ class Interval
     public static function anyDev()
     {
         // any == exclude nothing
-        return array('names' => array(), 'exclude' => true);
+        return ['names' => [], 'exclude' => true];
     }
 
     /**
@@ -93,6 +95,6 @@ class Interval
     public static function noDev()
     {
         // nothing == no names included
-        return array('names' => array(), 'exclude' => false);
+        return ['names' => [], 'exclude' => false];
     }
 }

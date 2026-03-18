@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -11,10 +13,10 @@
 
 namespace Composer\Semver;
 
+use Composer\Semver\Constraint\Constraint;
 use Composer\Semver\Constraint\ConstraintInterface;
 use Composer\Semver\Constraint\MatchAllConstraint;
 use Composer\Semver\Constraint\MultiConstraint;
-use Composer\Semver\Constraint\Constraint;
 
 /**
  * Version parser.
@@ -88,7 +90,7 @@ class VersionParser
     {
         $stability = strtolower((string) $stability);
 
-        if (!in_array($stability, array('stable', 'rc', 'beta', 'alpha', 'dev'), true)) {
+        if (!in_array($stability, ['stable', 'rc', 'beta', 'alpha', 'dev'], true)) {
             throw new \InvalidArgumentException('Invalid stability string "'.$stability.'", expected one of stable, RC, beta, alpha or dev');
         }
 
@@ -140,7 +142,7 @@ class VersionParser
         }
 
         // normalize master/trunk/default branches to dev-name for BC with 1.x as these used to be valid constraints
-        if (\in_array($version, array('master', 'trunk', 'default'), true)) {
+        if (\in_array($version, ['master', 'trunk', 'default'], true)) {
             $version = 'dev-' . $version;
         }
 
@@ -161,7 +163,7 @@ class VersionParser
                 . (!empty($matches[3]) ? $matches[3] : '.0')
                 . (!empty($matches[4]) ? $matches[4] : '.0');
             $index = 5;
-        // match date(time) based versioning
+            // match date(time) based versioning
         } elseif (preg_match('{^v?(\d{4}(?:[.:-]?\d{2}){1,6}(?:[.:-]?\d{1,3}){0,2})' . self::$modifierRegex . '$}i', $version, $matches)) {
             $version = (string) preg_replace('{\D}', '.', $matches[1]);
             $index = 2;
@@ -237,7 +239,7 @@ class VersionParser
         if (preg_match('{^v?(\d++)(\.(?:\d++|[xX*]))?(\.(?:\d++|[xX*]))?(\.(?:\d++|[xX*]))?$}i', $name, $matches)) {
             $version = '';
             for ($i = 1; $i < 5; ++$i) {
-                $version .= isset($matches[$i]) ? str_replace(array('*', 'X'), 'x', $matches[$i]) : '.x';
+                $version .= isset($matches[$i]) ? str_replace(['*', 'X'], 'x', $matches[$i]) : '.x';
             }
 
             return str_replace('x', '9999999', $version) . '-dev';
@@ -279,7 +281,7 @@ class VersionParser
         if (false === $orConstraints) {
             throw new \RuntimeException('Failed to preg_split string: '.$constraints);
         }
-        $orGroups = array();
+        $orGroups = [];
 
         foreach ($orConstraints as $orConstraint) {
             $andConstraints = preg_split('{(?<!^|as|[=>< ,]) *(?<!-)[, ](?!-) *(?!,|as|$)}', $orConstraint);
@@ -287,7 +289,7 @@ class VersionParser
                 throw new \RuntimeException('Failed to preg_split string: '.$orConstraint);
             }
             if (\count($andConstraints) > 1) {
-                $constraintObjects = array();
+                $constraintObjects = [];
                 foreach ($andConstraints as $andConstraint) {
                     foreach ($this->parseConstraint($andConstraint) as $parsedAndConstraint) {
                         $constraintObjects[] = $parsedAndConstraint;
@@ -344,10 +346,10 @@ class VersionParser
 
         if (preg_match('{^(v)?[xX*](\.[xX*])*$}i', $constraint, $match)) {
             if (!empty($match[1]) || !empty($match[2])) {
-                return array(new Constraint('>=', '0.0.0.0-dev'));
+                return [new Constraint('>=', '0.0.0.0-dev')];
             }
 
-            return array(new MatchAllConstraint());
+            return [new MatchAllConstraint()];
         }
 
         $versionRegex = 'v?(\d++)(?:\.(\d++))?(?:\.(\d++))?(?:\.(\d++))?(?:' . self::$modifierRegex . '|\.([xX*][.-]?dev))(?:\+[^\s]+)?';
@@ -396,10 +398,10 @@ class VersionParser
             $highVersion = $this->manipulateVersionString($matches, $highPosition, 1) . '-dev';
             $upperBound = new Constraint('<', $highVersion);
 
-            return array(
+            return [
                 $lowerBound,
                 $upperBound,
-            );
+            ];
         }
 
         // Caret Range
@@ -431,10 +433,10 @@ class VersionParser
             $highVersion = $this->manipulateVersionString($matches, $position, 1) . '-dev';
             $upperBound = new Constraint('<', $highVersion);
 
-            return array(
+            return [
                 $lowerBound,
                 $upperBound,
-            );
+            ];
         }
 
         // X Range
@@ -454,13 +456,13 @@ class VersionParser
             $highVersion = $this->manipulateVersionString($matches, $position, 1) . '-dev';
 
             if ($lowVersion === '0.0.0.0-dev') {
-                return array(new Constraint('<', $highVersion));
+                return [new Constraint('<', $highVersion)];
             }
 
-            return array(
+            return [
                 new Constraint('>=', $lowVersion),
                 new Constraint('<', $highVersion),
-            );
+            ];
         }
 
         // Hyphen Range
@@ -487,7 +489,7 @@ class VersionParser
                 $highVersion = $this->normalize($matches['to']);
                 $upperBound = new Constraint('<=', $highVersion);
             } else {
-                $highMatch = array('', $matches[11], $matches[12], $matches[13], $matches[14]);
+                $highMatch = ['', $matches[11], $matches[12], $matches[13], $matches[14]];
 
                 // validate to version
                 $this->normalize($matches['to']);
@@ -496,10 +498,10 @@ class VersionParser
                 $upperBound = new Constraint('<', $highVersion);
             }
 
-            return array(
+            return [
                 $lowerBound,
                 $upperBound,
-            );
+            ];
         }
 
         // Basic Comparators
@@ -529,7 +531,7 @@ class VersionParser
                     }
                 }
 
-                return array(new Constraint($matches[1] ?: '=', $version));
+                return [new Constraint($matches[1] ?: '=', $version)];
             } catch (\Exception $e) {
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -17,22 +19,22 @@ namespace Composer\Semver\Constraint;
 class Constraint implements ConstraintInterface
 {
     /* operator integer values */
-    const OP_EQ = 0;
-    const OP_LT = 1;
-    const OP_LE = 2;
-    const OP_GT = 3;
-    const OP_GE = 4;
-    const OP_NE = 5;
+    public const OP_EQ = 0;
+    public const OP_LT = 1;
+    public const OP_LE = 2;
+    public const OP_GT = 3;
+    public const OP_GE = 4;
+    public const OP_NE = 5;
 
     /* operator string values */
-    const STR_OP_EQ = '==';
-    const STR_OP_EQ_ALT = '=';
-    const STR_OP_LT = '<';
-    const STR_OP_LE = '<=';
-    const STR_OP_GT = '>';
-    const STR_OP_GE = '>=';
-    const STR_OP_NE = '!=';
-    const STR_OP_NE_ALT = '<>';
+    public const STR_OP_EQ = '==';
+    public const STR_OP_EQ_ALT = '=';
+    public const STR_OP_LT = '<';
+    public const STR_OP_LE = '<=';
+    public const STR_OP_GT = '>';
+    public const STR_OP_GE = '>=';
+    public const STR_OP_NE = '!=';
+    public const STR_OP_NE_ALT = '<>';
 
     /**
      * Operator to integer translation table.
@@ -40,7 +42,7 @@ class Constraint implements ConstraintInterface
      * @var array
      * @phpstan-var array<self::STR_OP_*, self::OP_*>
      */
-    private static $transOpStr = array(
+    private static $transOpStr = [
         '=' => self::OP_EQ,
         '==' => self::OP_EQ,
         '<' => self::OP_LT,
@@ -49,7 +51,7 @@ class Constraint implements ConstraintInterface
         '>=' => self::OP_GE,
         '<>' => self::OP_NE,
         '!=' => self::OP_NE,
-    );
+    ];
 
     /**
      * Integer to operator translation table.
@@ -57,14 +59,14 @@ class Constraint implements ConstraintInterface
      * @var array
      * @phpstan-var array<self::OP_*, self::STR_OP_*>
      */
-    private static $transOpInt = array(
+    private static $transOpInt = [
         self::OP_EQ => '==',
         self::OP_LT => '<',
         self::OP_LE => '<=',
         self::OP_GT => '>',
         self::OP_GE => '>=',
         self::OP_NE => '!=',
-    );
+    ];
 
     /**
      * @var int

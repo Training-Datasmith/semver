@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -23,12 +25,12 @@ class CompilingMatcher
      * @var array
      * @phpstan-var array<string, callable>
      */
-    private static $compiledCheckerCache = array();
+    private static $compiledCheckerCache = [];
     /**
      * @var array
      * @phpstan-var array<string, bool>
      */
-    private static $resultCache = array();
+    private static $resultCache = [];
 
     /** @var bool */
     private static $enabled;
@@ -36,14 +38,14 @@ class CompilingMatcher
     /**
      * @phpstan-var array<Constraint::OP_*, Constraint::STR_OP_*>
      */
-    private static $transOpInt = array(
+    private static $transOpInt = [
         Constraint::OP_EQ => Constraint::STR_OP_EQ,
         Constraint::OP_LT => Constraint::STR_OP_LT,
         Constraint::OP_LE => Constraint::STR_OP_LE,
         Constraint::OP_GT => Constraint::STR_OP_GT,
         Constraint::OP_GE => Constraint::STR_OP_GE,
         Constraint::OP_NE => Constraint::STR_OP_NE,
-    );
+    ];
 
     /**
      * Clears the memoization cache once you are done
@@ -52,8 +54,8 @@ class CompilingMatcher
      */
     public static function clear()
     {
-        self::$resultCache = array();
-        self::$compiledCheckerCache = array();
+        self::$resultCache = [];
+        self::$compiledCheckerCache = [];
     }
 
     /**

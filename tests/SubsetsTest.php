@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -11,9 +13,9 @@
 
 namespace Composer\Semver;
 
-use PHPUnit\Framework\TestCase;
-use Composer\Semver\Constraint\MatchNoneConstraint;
 use Composer\Semver\Constraint\MatchAllConstraint;
+use Composer\Semver\Constraint\MatchNoneConstraint;
+use PHPUnit\Framework\TestCase;
 
 class SubsetsTest extends TestCase
 {
@@ -24,7 +26,7 @@ class SubsetsTest extends TestCase
      */
     public function testIsSubsetOf($aStr, $bStr)
     {
-        $versionParser = new VersionParser;
+        $versionParser = new VersionParser();
         $a = $versionParser->parseConstraints($aStr);
         $b = $versionParser->parseConstraints($bStr);
 
@@ -36,52 +38,52 @@ class SubsetsTest extends TestCase
      */
     public static function subsets()
     {
-        return array(
+        return [
             // x is subset of y
-            array('*',               '*'),
-            array('*',               '!= 1 || == 1'),
-            array('1.0.0',           '*'),
-            array('1.0.*',           '*'),
-            array('^1.0 || ^2.0',    '*'),
-            array('^3.0',            '^3.2 || *'),
-            array('^1.0 || ^2.0',    '^1.0 || ^2.0'),
-            array('^1.0 || ^2.0',    '^1.0 || ^2.0 || ^4.0'),
-            array('^1.0 || ^2.1',    '^1.0 || ^2.1 || ^4.0'),
-            array('^1.2',            '^1.0 || ^2.0'),
-            array('1.2.3',           '^1.0 || ^2.0'),
-            array('2.0.0-dev',       '^1.0 || ^2.0'),
-            array('>= 2.1.0',        '>= 2.0.0'),
-            array('^2.0',            '<3.0.0'),
-            array('^3.0',            '> 2.1.3'),
-            array('3.0.0',           '<= 3.0.0'),
-            array('!= 3.0.0',        '*'),
-            array('!= 3.0.0',        '!= 3.0'),
-            array('!= 3.0, != 2.0',  '!= 2.0, != 3.0'),
-            array('>3',              '^2 || ^3 || >=4'),
-            array('>3',              '>=3'),
-            array('<3',              '<=3'),
-            array('= dev-foo',       '= dev-foo'),
-            array('!= dev-foo',      '!= dev-foo'),
-            array('< dev-foo',       '= dev-foo'), // invalid range matches nothing so is a subset of any other
-            array('1.5.*',           '^1.4'),
-            array('1.5.*',           '1.3 - 1.6 || 1.8 - 1.9'),
-            array('1.3.2',           '1.3.0 || 1.3.1 || 1.3.2'),
-            array('1.3.1',           '1.3.0 || 1.3.1 || 1.3.2'),
-            array('1.3.1 || 1.3.1',  '1.3.1'),
-            array('^1.0 || ^3.2',    '^1.0 || ^3.0'),
-            array('^1.3 || ^3.2',    '>1.2'),
-            array('^1.6',            '<1.3 || >1.5'),
-            array('>1.6',            '<1.3 || >1.5'),
-            array('>1.6',            '>1.5, >1.4, !=1.1'),
-            array('>1.6',            '>1.5 || >1.7'),
-            array('^1.1',            '> 1.0.0'),
-            array('^1.1, !=1.5.0',   '> 1.0.0'),
-            array('^1.1, !=0.5.0',   '> 1.0.0'),
-            array('^2.0 || dev-foo', '> 1.0 || dev-foo || dev-bar'),
-            array('^1.0, ^1.2',      '>=1.2'),
-            array('^1.0, ^1.2',      '^1.2'),
-            array('^1.0, ^1.2 || ^1.3', '^1.2'),
-        );
+            ['*',               '*'],
+            ['*',               '!= 1 || == 1'],
+            ['1.0.0',           '*'],
+            ['1.0.*',           '*'],
+            ['^1.0 || ^2.0',    '*'],
+            ['^3.0',            '^3.2 || *'],
+            ['^1.0 || ^2.0',    '^1.0 || ^2.0'],
+            ['^1.0 || ^2.0',    '^1.0 || ^2.0 || ^4.0'],
+            ['^1.0 || ^2.1',    '^1.0 || ^2.1 || ^4.0'],
+            ['^1.2',            '^1.0 || ^2.0'],
+            ['1.2.3',           '^1.0 || ^2.0'],
+            ['2.0.0-dev',       '^1.0 || ^2.0'],
+            ['>= 2.1.0',        '>= 2.0.0'],
+            ['^2.0',            '<3.0.0'],
+            ['^3.0',            '> 2.1.3'],
+            ['3.0.0',           '<= 3.0.0'],
+            ['!= 3.0.0',        '*'],
+            ['!= 3.0.0',        '!= 3.0'],
+            ['!= 3.0, != 2.0',  '!= 2.0, != 3.0'],
+            ['>3',              '^2 || ^3 || >=4'],
+            ['>3',              '>=3'],
+            ['<3',              '<=3'],
+            ['= dev-foo',       '= dev-foo'],
+            ['!= dev-foo',      '!= dev-foo'],
+            ['< dev-foo',       '= dev-foo'], // invalid range matches nothing so is a subset of any other
+            ['1.5.*',           '^1.4'],
+            ['1.5.*',           '1.3 - 1.6 || 1.8 - 1.9'],
+            ['1.3.2',           '1.3.0 || 1.3.1 || 1.3.2'],
+            ['1.3.1',           '1.3.0 || 1.3.1 || 1.3.2'],
+            ['1.3.1 || 1.3.1',  '1.3.1'],
+            ['^1.0 || ^3.2',    '^1.0 || ^3.0'],
+            ['^1.3 || ^3.2',    '>1.2'],
+            ['^1.6',            '<1.3 || >1.5'],
+            ['>1.6',            '<1.3 || >1.5'],
+            ['>1.6',            '>1.5, >1.4, !=1.1'],
+            ['>1.6',            '>1.5 || >1.7'],
+            ['^1.1',            '> 1.0.0'],
+            ['^1.1, !=1.5.0',   '> 1.0.0'],
+            ['^1.1, !=0.5.0',   '> 1.0.0'],
+            ['^2.0 || dev-foo', '> 1.0 || dev-foo || dev-bar'],
+            ['^1.0, ^1.2',      '>=1.2'],
+            ['^1.0, ^1.2',      '^1.2'],
+            ['^1.0, ^1.2 || ^1.3', '^1.2'],
+        ];
     }
 
     /**
@@ -91,7 +93,7 @@ class SubsetsTest extends TestCase
      */
     public function testIsNotSubsetOf($aStr, $bStr)
     {
-        $versionParser = new VersionParser;
+        $versionParser = new VersionParser();
         $a = $versionParser->parseConstraints($aStr);
         $b = $versionParser->parseConstraints($bStr);
 
@@ -103,52 +105,52 @@ class SubsetsTest extends TestCase
      */
     public static function notSubsets()
     {
-        return array(
+        return [
             // x is subset of y
-            array('*',               '>= 1 || < 1'), // it is a subset of the numeric interval, but * allows dev- branches while the latter does not
-            array('*',               '1.0.0'),
-            array('*',               '1.0.*'),
-            array('*',               '^1.0 || ^2.0'),
-            array('^1.0 || ^2.0',    '^1.0, ^2.0'), // buggy constraint on the right here, checking it does not match
-            array('^1.0 || ^2.0',    '^1.2'),
-            array('^1.0 || ^2.0',    '^1.0'),
-            array('^1.0 || ^2.0',    '1.2.3'),
-            array('^1.0 || ^3.0',    '1.2.3'),
-            array('3.0.0',           '^1.0 || ^2.0'),
-            array('3.0.0',           '< 3.0.0'),
-            array('3.0.0',           '>= 3.0.1'),
-            array('!= 3.0.0',        '> 3.0.0 || < 3.0.0-stable'), // it is a subset of the numeric interval, but != x allows dev- branches while the right side does not
-            array('!= 3.0.0-dev',    '^2.0 || <2 || >3.0-dev'), // it is a subset of the numeric interval, but != x allows dev- branches while the right side does not
-            array('!= 3.0.0',        '= 3.0.0'),
-            array('!= 3.0.0',        '!= 3.0.1'),
-            array('!= 3.0.0',        'dev-foo || dev-bar'),
-            array('!= 3.0.0',        '<dev-foo || >dev-bar'),
-            array('>= 1.0.0',        '= 1.2.3'),
-            array('< 2.0.0',         '= 1.2.3'),
-            array('>3',              '^2 || ^3 || >4'),
-            array('>=3',             '>3'),
-            array('<=3',             '<3'),
-            array('^2.1',            '^2.0, !=2.1.3'),
-            array('<2.0',            '>=1.1'),
-            array('!= dev-foo',      '!= dev-bar'),
-            array('!= dev-foo',      '= dev-bar'),
-            array('1.3.3',           '1.3.0 || 1.3.1 || 1.3.2'),
-            array('1.3.1 || 1.3.2',  '1.3.1'),
-            array('>1.6',            '>1.5, >1.4, !=1.7'),
-            array('>1.6',            '>1.5, >1.7'),
-            array('^1.0 || ^3.2',    '^1.2 || ^3.0'),
-            array('^1.0 || ^3.2',    '^3.0'),
-            array('^1.3 || ^3.2',    '>1.4'),
-            array('^2.0 || dev-foo', '> 1.0 || dev-bar'),
-        );
+            ['*',               '>= 1 || < 1'], // it is a subset of the numeric interval, but * allows dev- branches while the latter does not
+            ['*',               '1.0.0'],
+            ['*',               '1.0.*'],
+            ['*',               '^1.0 || ^2.0'],
+            ['^1.0 || ^2.0',    '^1.0, ^2.0'], // buggy constraint on the right here, checking it does not match
+            ['^1.0 || ^2.0',    '^1.2'],
+            ['^1.0 || ^2.0',    '^1.0'],
+            ['^1.0 || ^2.0',    '1.2.3'],
+            ['^1.0 || ^3.0',    '1.2.3'],
+            ['3.0.0',           '^1.0 || ^2.0'],
+            ['3.0.0',           '< 3.0.0'],
+            ['3.0.0',           '>= 3.0.1'],
+            ['!= 3.0.0',        '> 3.0.0 || < 3.0.0-stable'], // it is a subset of the numeric interval, but != x allows dev- branches while the right side does not
+            ['!= 3.0.0-dev',    '^2.0 || <2 || >3.0-dev'], // it is a subset of the numeric interval, but != x allows dev- branches while the right side does not
+            ['!= 3.0.0',        '= 3.0.0'],
+            ['!= 3.0.0',        '!= 3.0.1'],
+            ['!= 3.0.0',        'dev-foo || dev-bar'],
+            ['!= 3.0.0',        '<dev-foo || >dev-bar'],
+            ['>= 1.0.0',        '= 1.2.3'],
+            ['< 2.0.0',         '= 1.2.3'],
+            ['>3',              '^2 || ^3 || >4'],
+            ['>=3',             '>3'],
+            ['<=3',             '<3'],
+            ['^2.1',            '^2.0, !=2.1.3'],
+            ['<2.0',            '>=1.1'],
+            ['!= dev-foo',      '!= dev-bar'],
+            ['!= dev-foo',      '= dev-bar'],
+            ['1.3.3',           '1.3.0 || 1.3.1 || 1.3.2'],
+            ['1.3.1 || 1.3.2',  '1.3.1'],
+            ['>1.6',            '>1.5, >1.4, !=1.7'],
+            ['>1.6',            '>1.5, >1.7'],
+            ['^1.0 || ^3.2',    '^1.2 || ^3.0'],
+            ['^1.0 || ^3.2',    '^3.0'],
+            ['^1.3 || ^3.2',    '>1.4'],
+            ['^2.0 || dev-foo', '> 1.0 || dev-bar'],
+        ];
     }
 
     public function testMatchNoneIsNoSubsetNorSupersetExceptOfMatchAll()
     {
-        $versionParser = new VersionParser;
-        $matchNone = new MatchNoneConstraint;
+        $versionParser = new VersionParser();
+        $matchNone = new MatchNoneConstraint();
 
-        $notSubsets = array(
+        $notSubsets = [
             '1.0.0',
             '^1.0',
             '>3',
@@ -157,14 +159,14 @@ class SubsetsTest extends TestCase
             '!= 1',
             '!= dev-foo',
             '<= dev-foo',
-        );
+        ];
         foreach ($notSubsets as $constraint) {
             $c = $versionParser->parseConstraints($constraint);
             $this->assertFalse(Intervals::isSubsetOf($c, $matchNone), $constraint.' ('.$c.') should not be seen as a subset of '.$matchNone);
             $this->assertFalse(Intervals::isSubsetOf($matchNone, $c), $matchNone.' should not be seen as a subset of '.$constraint.' ('.$c.')');
         }
 
-        $empty = new MatchAllConstraint;
+        $empty = new MatchAllConstraint();
         $this->assertFalse(Intervals::isSubsetOf($empty, $matchNone), $empty.' should not be seen as a subset of '.$matchNone);
         $this->assertTrue(Intervals::isSubsetOf($matchNone, $empty), $matchNone.' should be seen as a subset of '.$empty);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -73,7 +75,7 @@ class Bound
      */
     public function compareTo(Bound $other, $operator)
     {
-        if (!\in_array($operator, array('<', '>'), true)) {
+        if (!\in_array($operator, ['<', '>'], true)) {
             throw new \InvalidArgumentException('Does not support any other operator other than > or <.');
         }
 

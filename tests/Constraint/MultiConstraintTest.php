@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -11,9 +13,9 @@
 
 namespace Composer\Semver\Constraint;
 
+use Composer\Semver\Intervals;
 use Composer\Semver\VersionParser;
 use PHPUnit\Framework\TestCase;
-use Composer\Semver\Intervals;
 
 class MultiConstraintTest extends TestCase
 {
@@ -38,14 +40,14 @@ class MultiConstraintTest extends TestCase
 
     public function testIsConjunctive()
     {
-        $multiConstraint = new MultiConstraint(array($this->versionRequireStart, $this->versionRequireEnd), true);
+        $multiConstraint = new MultiConstraint([$this->versionRequireStart, $this->versionRequireEnd], true);
         $this->assertTrue($multiConstraint->isConjunctive());
         $this->assertFalse($multiConstraint->isDisjunctive());
     }
 
     public function testIsDisjunctive()
     {
-        $multiConstraint = new MultiConstraint(array($this->versionRequireStart, $this->versionRequireEnd), false);
+        $multiConstraint = new MultiConstraint([$this->versionRequireStart, $this->versionRequireEnd], false);
         $this->assertFalse($multiConstraint->isConjunctive());
         $this->assertTrue($multiConstraint->isDisjunctive());
     }
@@ -54,7 +56,7 @@ class MultiConstraintTest extends TestCase
     {
         $versionProvide = new Constraint('==', '1.1');
 
-        $multiRequire = new MultiConstraint(array($this->versionRequireStart, $this->versionRequireEnd));
+        $multiRequire = new MultiConstraint([$this->versionRequireStart, $this->versionRequireEnd]);
 
         $this->assertTrue($multiRequire->matches($versionProvide));
         $this->assertTrue($versionProvide->matches($multiRequire));
@@ -69,8 +71,8 @@ class MultiConstraintTest extends TestCase
         $versionProvideStart = new Constraint('>=', '1.1');
         $versionProvideEnd = new Constraint('<', '2.0');
 
-        $multiRequire = new MultiConstraint(array($this->versionRequireStart, $this->versionRequireEnd));
-        $multiProvide = new MultiConstraint(array($versionProvideStart, $versionProvideEnd));
+        $multiRequire = new MultiConstraint([$this->versionRequireStart, $this->versionRequireEnd]);
+        $multiProvide = new MultiConstraint([$versionProvideStart, $versionProvideEnd]);
 
         $this->assertTrue($multiRequire->matches($multiProvide));
         $this->assertTrue($multiProvide->matches($multiRequire));
@@ -84,8 +86,8 @@ class MultiConstraintTest extends TestCase
         $versionProvideStart = new Constraint('>', '1.0');
         $versionProvideEnd = new Constraint('<', '1.2');
 
-        $multiRequire = new MultiConstraint(array($this->versionRequireStart, $this->versionRequireEnd), false);
-        $multiProvide = new MultiConstraint(array($versionProvideStart, $versionProvideEnd), false);
+        $multiRequire = new MultiConstraint([$this->versionRequireStart, $this->versionRequireEnd], false);
+        $multiProvide = new MultiConstraint([$versionProvideStart, $versionProvideEnd], false);
 
         $this->assertTrue($multiRequire->matches($multiProvide));
         $this->assertTrue($multiProvide->matches($multiRequire));
@@ -99,8 +101,8 @@ class MultiConstraintTest extends TestCase
         $versionProvideStart = new Constraint('<', '1.0');
         $versionProvideEnd = new Constraint('>', '2.0');
 
-        $multiRequire = new MultiConstraint(array($this->versionRequireStart, $this->versionRequireEnd), true);
-        $multiProvide = new MultiConstraint(array($versionProvideStart, $versionProvideEnd), false);
+        $multiRequire = new MultiConstraint([$this->versionRequireStart, $this->versionRequireEnd], true);
+        $multiProvide = new MultiConstraint([$versionProvideStart, $versionProvideEnd], false);
 
         $this->assertFalse($multiRequire->matches($multiProvide));
         $this->assertFalse($multiProvide->matches($multiRequire));
@@ -113,7 +115,7 @@ class MultiConstraintTest extends TestCase
     {
         $versionProvide = new Constraint('==', '1.2');
 
-        $multiRequire = new MultiConstraint(array($this->versionRequireStart, $this->versionRequireEnd));
+        $multiRequire = new MultiConstraint([$this->versionRequireStart, $this->versionRequireEnd]);
 
         $this->assertFalse($multiRequire->matches($versionProvide));
         $this->assertFalse($versionProvide->matches($multiRequire));
@@ -125,7 +127,7 @@ class MultiConstraintTest extends TestCase
 
     public function testGetPrettyString()
     {
-        $multiConstraint = new MultiConstraint(array($this->versionRequireStart, $this->versionRequireEnd));
+        $multiConstraint = new MultiConstraint([$this->versionRequireStart, $this->versionRequireEnd]);
         $expectedString = 'pretty-string';
         $multiConstraint->setPrettyString($expectedString);
         $result = $multiConstraint->getPrettyString();
@@ -160,55 +162,55 @@ class MultiConstraintTest extends TestCase
      */
     public static function bounds()
     {
-        return array(
-            'all equal' => array(
-                array(
+        return [
+            'all equal' => [
+                [
                     new Constraint('==', '1.0.0.0'),
                     new Constraint('==', '1.0.0.0'),
-                ),
+                ],
                 true,
                 new Bound('1.0.0.0', true),
                 new Bound('1.0.0.0', true),
-            ),
-            '">" should take precedence ">=" for lower bound when conjunctive' => array(
-                array(
+            ],
+            '">" should take precedence ">=" for lower bound when conjunctive' => [
+                [
                     new Constraint('>', '1.0.0.0'),
                     new Constraint('>=', '1.0.0.0'),
                     new Constraint('>', '1.0.0.0'),
-                ),
+                ],
                 true,
                 new Bound('1.0.0.0', false),
                 Bound::positiveInfinity(),
-            ),
-            '">=" should take precedence ">" for lower bound when disjunctive' => array(
-                array(
+            ],
+            '">=" should take precedence ">" for lower bound when disjunctive' => [
+                [
                     new Constraint('>', '1.0.0.0'),
                     new Constraint('>=', '1.0.0.0'),
                     new Constraint('>', '1.0.0.0'),
-                ),
+                ],
                 false,
                 new Bound('1.0.0.0', true),
                 Bound::positiveInfinity(),
-            ),
-            'Bounds should be limited when conjunctive' => array(
-                array(
+            ],
+            'Bounds should be limited when conjunctive' => [
+                [
                     new Constraint('>=', '7.0.0.0'),
                     new Constraint('<', '8.0.0.0'),
-                ),
+                ],
                 true,
                 new Bound('7.0.0.0', true),
                 new Bound('8.0.0.0', false),
-            ),
-            'Bounds should be unlimited when disjunctive' => array(
-                array(
+            ],
+            'Bounds should be unlimited when disjunctive' => [
+                [
                     new Constraint('>=', '7.0.0.0'),
                     new Constraint('<', '8.0.0.0'),
-                ),
+                ],
                 false,
                 Bound::zero(),
                 Bound::positiveInfinity(),
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -232,40 +234,40 @@ class MultiConstraintTest extends TestCase
      */
     public static function boundsIntegration()
     {
-        return array(
-            '^7.0' => array(
+        return [
+            '^7.0' => [
                 '^7.0',
                 new Bound('7.0.0.0-dev', true),
                 new Bound('8.0.0.0-dev', false),
-            ),
-            '^7.2' => array(
+            ],
+            '^7.2' => [
                 '^7.2',
                 new Bound('7.2.0.0-dev', true),
                 new Bound('8.0.0.0-dev', false),
-            ),
-            '7.4.*' => array(
+            ],
+            '7.4.*' => [
                 '7.4.*',
                 new Bound('7.4.0.0-dev', true),
                 new Bound('7.5.0.0-dev', false),
-            ),
-            '7.2.* || 7.4.*' => array(
+            ],
+            '7.2.* || 7.4.*' => [
                 '7.2.* || 7.4.*',
                 new Bound('7.2.0.0-dev', true),
                 new Bound('7.5.0.0-dev', false),
-            ),
-        );
+            ],
+        ];
     }
 
     public function testMultipleMultiConstraintsMerging()
     {
         $versionParser = new VersionParser();
-        $strConstraints = array(
+        $strConstraints = [
             '^7.0',
             '^7.2',
             '7.4.*',
             '7.2.* || 7.4.*',
-        );
-        $constraints = array();
+        ];
+        $constraints = [];
         foreach ($strConstraints as $str) {
             $constraints[] = $versionParser->parseConstraints($str);
         }
@@ -280,10 +282,10 @@ class MultiConstraintTest extends TestCase
     {
         $versionParser = new VersionParser();
 
-        $constraint = new MultiConstraint(array(
+        $constraint = new MultiConstraint([
             $versionParser->parseConstraints('^7.1.15 || ^7.2.3'),
             $versionParser->parseConstraints('^7.2.2'),
-        ));
+        ]);
 
         $this->assertEquals(new Bound('7.2.2.0-dev', true), $constraint->getLowerBound(), 'Expected lower bound does not match');
         $this->assertEquals(new Bound('8.0.0.0-dev', false), $constraint->getUpperBound(), 'Expected upper bound does not match');
@@ -291,20 +293,21 @@ class MultiConstraintTest extends TestCase
 
     public function testCreatesMatchAllConstraintIfNoneGiven()
     {
-        $this->assertInstanceOf('Composer\Semver\Constraint\MatchAllConstraint', MultiConstraint::create(array()));
+        $this->assertInstanceOf('Composer\Semver\Constraint\MatchAllConstraint', MultiConstraint::create([]));
     }
 
     public function testMatchAllConstraintWithinConjunctiveMultiConstraint()
     {
         $this->assertSame('[>= 2.5.0.0-dev <= 3.0.0.0-dev *]', (string) MultiConstraint::create(
-            array(new Constraint('>=', '2.5.0.0-dev'), new Constraint('<=', '3.0.0.0-dev'), new MatchAllConstraint())
+            [new Constraint('>=', '2.5.0.0-dev'), new Constraint('<=', '3.0.0.0-dev'), new MatchAllConstraint()]
         ));
     }
 
     public function testMatchAllConstraintWithinDisjunctiveMultiConstraint()
     {
         $this->assertSame('[>= 2.5.0.0-dev || *]', (string) MultiConstraint::create(
-            array(new Constraint('>=', '2.5.0.0-dev'), new MatchAllConstraint()), false
+            [new Constraint('>=', '2.5.0.0-dev'), new MatchAllConstraint()],
+            false
         ));
     }
 
@@ -327,213 +330,213 @@ class MultiConstraintTest extends TestCase
      */
     public static function multiConstraintOptimizations()
     {
-        return array(
-            'Test collapses contiguous' => array(
+        return [
+            'Test collapses contiguous' => [
                 '^2.5 || ^3.0',
                 new MultiConstraint(
-                    array(
+                    [
                         new Constraint('>=', '2.5.0.0-dev'),
                         new Constraint('<', '4.0.0.0-dev'),
-                    ),
+                    ],
                     true // conjunctive
                 ),
-            ),
-            'Test collapses multiple contiguous' => array(
+            ],
+            'Test collapses multiple contiguous' => [
                 '^2.5 || ^3.0 || ^4.0',
                 new MultiConstraint(
-                    array(
+                    [
                         new Constraint('>=', '2.5.0.0-dev'),
                         new Constraint('<', '5.0.0.0-dev'),
-                    ),
+                    ],
                     true // conjunctive
                 ),
-            ),
-            'Test does not collapse when one side is more complex' => array(
+            ],
+            'Test does not collapse when one side is more complex' => [
                 '~2.5.9 || ~2.6, >=2.6.2',
                 new MultiConstraint(
-                    array(
+                    [
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '2.5.9.0-dev'),
                                 new Constraint('<', '2.6.0.0-dev'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '2.6.0.0-dev'),
                                 new Constraint('<', '3.0.0.0-dev'),
                                 new Constraint('>=', '2.6.2.0-dev'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
-                    ),
+                    ],
                     false
-                )
-            ),
-            'Test does not collapse multiple contiguous with other constraint but collapses the end' => array(
+                ),
+            ],
+            'Test does not collapse multiple contiguous with other constraint but collapses the end' => [
                 '^1.0 || ^2.0 !=2.0.1 || ^3.0 || ^4.0',
                 new MultiConstraint(
-                    array(
+                    [
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '1.0.0.0-dev'),
                                 new Constraint('<', '2.0.0.0-dev'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '2.0.0.0-dev'),
                                 new Constraint('<', '3.0.0.0-dev'),
                                 new Constraint('!=', '2.0.1.0'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '3.0.0.0-dev'),
                                 new Constraint('<', '5.0.0.0-dev'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
-                    ),
+                    ],
                     false
-                )
-            ),
-            'Test does not collapse multiple contiguous with multiple other constraint' => array(
+                ),
+            ],
+            'Test does not collapse multiple contiguous with multiple other constraint' => [
                 '^1.0 != 1.0.1 || ^2.0 !=2.0.1 || ^3.0 || ^4.0 != 4.0.1',
                 new MultiConstraint(
-                    array(
+                    [
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '1.0.0.0-dev'),
                                 new Constraint('<', '2.0.0.0-dev'),
                                 new Constraint('!=', '1.0.1.0'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '2.0.0.0-dev'),
                                 new Constraint('<', '3.0.0.0-dev'),
                                 new Constraint('!=', '2.0.1.0'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '3.0.0.0-dev'),
                                 new Constraint('<', '4.0.0.0-dev'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '4.0.0.0-dev'),
                                 new Constraint('<', '5.0.0.0-dev'),
                                 new Constraint('!=', '4.0.1.0'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
-                    ),
+                    ],
                     false
-                )
-            ),
-            'Test does not collapse if contiguous range and other constraints also apply' => array(
+                ),
+            ],
+            'Test does not collapse if contiguous range and other constraints also apply' => [
                 '~0.1 || ~1.0 !=1.0.1',
                 new MultiConstraint(
-                    array(
+                    [
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '0.1.0.0-dev'),
                                 new Constraint('<', '1.0.0.0-dev'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '1.0.0.0-dev'),
                                 new Constraint('<', '2.0.0.0-dev'),
                                 new Constraint('!=', '1.0.1.0'),
-                            ),
+                            ],
                             true // conjunctive
                         ),
-                    ),
+                    ],
                     false
-                )
-            ),
-            'Parse caret constraints must not collapse if non contiguous range' => array(
+                ),
+            ],
+            'Parse caret constraints must not collapse if non contiguous range' => [
                 '^0.2 || ^1.0',
                 new MultiConstraint(
-                    array(
+                    [
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '0.2.0.0-dev'),
                                 new Constraint('<', '0.3.0.0-dev'),
-                            )
+                            ]
                         ),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '1.0.0.0-dev'),
                                 new Constraint('<', '2.0.0.0-dev'),
-                            )
+                            ]
                         ),
-                    ),
+                    ],
                     false // disjunctive
                 ),
-            ),
-            'Must not collapse if not contiguous range but collapse following constraints' => array(
+            ],
+            'Must not collapse if not contiguous range but collapse following constraints' => [
                 '^0.1 || ^1.0 || ^2.0',
                 new MultiConstraint(
-                    array(
+                    [
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '0.1.0.0-dev'),
                                 new Constraint('<', '0.2.0.0-dev'),
-                            )
+                            ]
                         ),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '1.0.0.0-dev'),
                                 new Constraint('<', '3.0.0.0-dev'),
-                            )
+                            ]
                         ),
-                    ),
+                    ],
                     false // disjunctive
                 ),
-            ),
-            'Must not collapse other constraint not in range' => array(
+            ],
+            'Must not collapse other constraint not in range' => [
                 '^1.0 || 2.1 || ^3.0',
                 new MultiConstraint(
-                    array(
+                    [
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '1.0.0.0-dev'),
                                 new Constraint('<', '2.0.0.0-dev'),
-                            )
+                            ]
                         ),
                         new Constraint('=', '2.1.0.0'),
                         new MultiConstraint(
-                            array(
+                            [
                                 new Constraint('>=', '3.0.0.0-dev'),
                                 new Constraint('<', '4.0.0.0-dev'),
-                            )
+                            ]
                         ),
-                    ),
+                    ],
                     false // disjunctive
                 ),
-            ),
-        );
+            ],
+        ];
     }
 
     public function testMultiConstraintNotconjunctiveFillWithFalse()
     {
         $versionProvide = new Constraint('==', '1.1');
-        $multiRequire = new MultiConstraint(array(
+        $multiRequire = new MultiConstraint([
             new Constraint('>', 'dev-foo'), // always false
             new Constraint('>', 'dev-bar'), // always false
-        ), false);
+        ], false);
 
         $this->assertFalse($multiRequire->matches($versionProvide));
         $this->assertFalse($versionProvide->matches($multiRequire));
@@ -544,10 +547,10 @@ class MultiConstraintTest extends TestCase
     public function testMultiConstraintConjunctiveFillWithTrue()
     {
         $versionProvide = new Constraint('!=', '1.1');
-        $multiRequire = new MultiConstraint(array(
+        $multiRequire = new MultiConstraint([
             new Constraint('!=', 'dev-foo'), // always true
             new Constraint('!=', 'dev-bar'), // always true
-        ), true);
+        ], true);
 
         $this->assertTrue($multiRequire->matches($versionProvide));
         $this->assertTrue($versionProvide->matches($multiRequire));
@@ -562,7 +565,7 @@ class MultiConstraintTest extends TestCase
      */
     private function matchCompiled(ConstraintInterface $constraint, $operator, $version)
     {
-        $map = array(
+        $map = [
             '=' => Constraint::OP_EQ,
             '==' => Constraint::OP_EQ,
             '<' => Constraint::OP_LT,
@@ -571,7 +574,7 @@ class MultiConstraintTest extends TestCase
             '>=' => Constraint::OP_GE,
             '<>' => Constraint::OP_NE,
             '!=' => Constraint::OP_NE,
-        );
+        ];
 
         $code = $constraint->compile($map[$operator]);
         $v = $version;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -11,8 +13,8 @@
 
 namespace Composer\Semver;
 
-use PHPUnit\Framework\TestCase;
 use Composer\Semver\Constraint\Constraint;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \Composer\Semver\Comparator
@@ -130,14 +132,14 @@ class ComparatorTest extends TestCase
      */
     public static function greaterThanProvider()
     {
-        return array(
-            array('1.25.0', '1.24.0', true),
-            array('1.25.0', '1.25.0', false),
-            array('1.25.0', '1.26.0', false),
-            array('1.26.0', 'dev-foo', true),
-            array('dev-foo', 'dev-master', false),
-            array('dev-foo', 'dev-bar', false),
-        );
+        return [
+            ['1.25.0', '1.24.0', true],
+            ['1.25.0', '1.25.0', false],
+            ['1.25.0', '1.26.0', false],
+            ['1.26.0', 'dev-foo', true],
+            ['dev-foo', 'dev-master', false],
+            ['dev-foo', 'dev-bar', false],
+        ];
     }
 
     /**
@@ -145,11 +147,11 @@ class ComparatorTest extends TestCase
      */
     public static function greaterThanOrEqualToProvider()
     {
-        return array(
-            array('1.25.0', '1.24.0', true),
-            array('1.25.0', '1.25.0', true),
-            array('1.25.0', '1.26.0', false),
-        );
+        return [
+            ['1.25.0', '1.24.0', true],
+            ['1.25.0', '1.25.0', true],
+            ['1.25.0', '1.26.0', false],
+        ];
     }
 
     /**
@@ -157,15 +159,15 @@ class ComparatorTest extends TestCase
      */
     public static function lessThanProvider()
     {
-        return array(
-            array('1.25.0', '1.24.0', false),
-            array('1.25.0', '1.25.0', false),
-            array('1.25.0', '1.26.0', true),
-            array('1.0.0', '1.2-dev', true),
-            array('dev-foo', '1.26.0', true),
-            array('dev-foo', 'dev-master', false),
-            array('dev-foo', 'dev-bar', false),
-        );
+        return [
+            ['1.25.0', '1.24.0', false],
+            ['1.25.0', '1.25.0', false],
+            ['1.25.0', '1.26.0', true],
+            ['1.0.0', '1.2-dev', true],
+            ['dev-foo', '1.26.0', true],
+            ['dev-foo', 'dev-master', false],
+            ['dev-foo', 'dev-bar', false],
+        ];
     }
 
     /**
@@ -173,11 +175,11 @@ class ComparatorTest extends TestCase
      */
     public static function lessThanOrEqualToProvider()
     {
-        return array(
-            array('1.25.0', '1.24.0', false),
-            array('1.25.0', '1.25.0', true),
-            array('1.25.0', '1.26.0', true),
-        );
+        return [
+            ['1.25.0', '1.24.0', false],
+            ['1.25.0', '1.25.0', true],
+            ['1.25.0', '1.26.0', true],
+        ];
     }
 
     /**
@@ -185,14 +187,14 @@ class ComparatorTest extends TestCase
      */
     public static function equalToProvider()
     {
-        return array(
-            array('1.25.0', '1.24.0', false),
-            array('1.25.0', '1.25.0', true),
-            array('1.25.0', '1.26.0', false),
-            array('dev-foo', '1.26.0', false),
-            array('dev-foo', 'dev-master', false),
-            array('dev-foo', 'dev-bar', false),
-        );
+        return [
+            ['1.25.0', '1.24.0', false],
+            ['1.25.0', '1.25.0', true],
+            ['1.25.0', '1.26.0', false],
+            ['dev-foo', '1.26.0', false],
+            ['dev-foo', 'dev-master', false],
+            ['dev-foo', 'dev-bar', false],
+        ];
     }
 
     /**
@@ -200,11 +202,11 @@ class ComparatorTest extends TestCase
      */
     public static function notEqualToProvider()
     {
-        return array(
-            array('1.25.0', '1.24.0', true),
-            array('1.25.0', '1.25.0', false),
-            array('1.25.0', '1.26.0', true),
-        );
+        return [
+            ['1.25.0', '1.24.0', true],
+            ['1.25.0', '1.25.0', false],
+            ['1.25.0', '1.26.0', true],
+        ];
     }
 
     /**
@@ -212,43 +214,43 @@ class ComparatorTest extends TestCase
      */
     public static function compareProvider()
     {
-        return array(
-            array('1.25.0', '>', '1.24.0', true),
-            array('1.25.0', '>', '1.25.0', false),
-            array('1.25.0', '>', '1.26.0', false),
+        return [
+            ['1.25.0', '>', '1.24.0', true],
+            ['1.25.0', '>', '1.25.0', false],
+            ['1.25.0', '>', '1.26.0', false],
 
-            array('1.25.0', '>=', '1.24.0', true),
-            array('1.25.0', '>=', '1.25.0', true),
-            array('1.25.0', '>=', '1.26.0', false),
+            ['1.25.0', '>=', '1.24.0', true],
+            ['1.25.0', '>=', '1.25.0', true],
+            ['1.25.0', '>=', '1.26.0', false],
 
-            array('1.25.0', '<', '1.24.0', false),
-            array('1.25.0', '<', '1.25.0', false),
-            array('1.25.0', '<', '1.26.0', true),
-            array('1.25.0-beta2.1', '<', '1.25.0-b.3', true),
-            array('1.25.0-b2.1', '<', '1.25.0beta.3', true),
-            array('1.25.0-b-2.1', '<', '1.25.0-rc', true),
+            ['1.25.0', '<', '1.24.0', false],
+            ['1.25.0', '<', '1.25.0', false],
+            ['1.25.0', '<', '1.26.0', true],
+            ['1.25.0-beta2.1', '<', '1.25.0-b.3', true],
+            ['1.25.0-b2.1', '<', '1.25.0beta.3', true],
+            ['1.25.0-b-2.1', '<', '1.25.0-rc', true],
 
-            array('1.25.0', '<=', '1.24.0', false),
-            array('1.25.0', '<=', '1.25.0', true),
-            array('1.25.0', '<=', '1.26.0', true),
+            ['1.25.0', '<=', '1.24.0', false],
+            ['1.25.0', '<=', '1.25.0', true],
+            ['1.25.0', '<=', '1.26.0', true],
 
-            array('1.25.0', '==', '1.24.0', false),
-            array('1.25.0', '==', '1.25.0', true),
-            array('1.25.0', '==', '1.26.0', false),
-            array('1.25.0-beta2.1', '==', '1.25.0-b.2.1', true),
-            array('1.25.0beta2.1', '==', '1.25.0-b2.1', true),
+            ['1.25.0', '==', '1.24.0', false],
+            ['1.25.0', '==', '1.25.0', true],
+            ['1.25.0', '==', '1.26.0', false],
+            ['1.25.0-beta2.1', '==', '1.25.0-b.2.1', true],
+            ['1.25.0beta2.1', '==', '1.25.0-b2.1', true],
 
-            array('1.25.0', '=', '1.24.0', false),
-            array('1.25.0', '=', '1.25.0', true),
-            array('1.25.0', '=', '1.26.0', false),
+            ['1.25.0', '=', '1.24.0', false],
+            ['1.25.0', '=', '1.25.0', true],
+            ['1.25.0', '=', '1.26.0', false],
 
-            array('1.25.0', '!=', '1.24.0', true),
-            array('1.25.0', '!=', '1.25.0', false),
-            array('1.25.0', '!=', '1.26.0', true),
+            ['1.25.0', '!=', '1.24.0', true],
+            ['1.25.0', '!=', '1.25.0', false],
+            ['1.25.0', '!=', '1.26.0', true],
 
-            array('1.25.0', '<>', '1.24.0', true),
-            array('1.25.0', '<>', '1.25.0', false),
-            array('1.25.0', '<>', '1.26.0', true),
-        );
+            ['1.25.0', '<>', '1.24.0', true],
+            ['1.25.0', '<>', '1.25.0', false],
+            ['1.25.0', '<>', '1.26.0', true],
+        ];
     }
 }

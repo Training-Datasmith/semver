@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -12,7 +14,6 @@
 namespace Composer\Semver;
 
 use Composer\Semver\Constraint\Constraint;
-use Composer\Semver\Constraint\MultiConstraint;
 use PHPUnit\Framework\TestCase;
 
 class CompilingMatcherTest extends TestCase

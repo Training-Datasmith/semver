@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of composer/semver.
  *
@@ -86,7 +88,7 @@ class MultiConstraint implements ConstraintInterface
      */
     public function compile($otherOperator)
     {
-        $parts = array();
+        $parts = [];
         foreach ($this->constraints as $constraint) {
             $code = $constraint->compile($otherOperator);
             if ($code === 'true') {
@@ -169,7 +171,7 @@ class MultiConstraint implements ConstraintInterface
             return $this->string;
         }
 
-        $constraints = array();
+        $constraints = [];
         foreach ($this->constraints as $constraint) {
             $constraints[] = (string) $constraint;
         }
@@ -251,7 +253,7 @@ class MultiConstraint implements ConstraintInterface
         // [>= 1 < 2] || [>= 2 < 3] || [>= 3 < 4] => [>= 1 < 4]
         if (!$conjunctive) {
             $left = $constraints[0];
-            $mergedConstraints = array();
+            $mergedConstraints = [];
             $optimized = false;
             for ($i = 1, $l = \count($constraints); $i < $l; $i++) {
                 $right = $constraints[$i];
@@ -274,11 +276,12 @@ class MultiConstraint implements ConstraintInterface
                 ) {
                     $optimized = true;
                     $left = new MultiConstraint(
-                        array(
+                        [
                             $left->constraints[0],
                             $right->constraints[1],
-                        ),
-                        true);
+                        ],
+                        true
+                    );
                 } else {
                     $mergedConstraints[] = $left;
                     $left = $right;
@@ -286,7 +289,7 @@ class MultiConstraint implements ConstraintInterface
             }
             if ($optimized) {
                 $mergedConstraints[] = $left;
-                return array($mergedConstraints, false);
+                return [$mergedConstraints, false];
             }
         }
 
