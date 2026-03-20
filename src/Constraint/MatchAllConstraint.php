@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of composer/semver.
  *
@@ -10,7 +9,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
  */
-
 namespace Composer\Semver\Constraint;
 
 /**
@@ -18,47 +16,41 @@ namespace Composer\Semver\Constraint;
  *
  * This constraint matches everything.
  */
-class MatchAllConstraint implements ConstraintInterface
+class Match_All_Constraint implements Constraint_Interface
 {
     /** @var string|null */
-    protected $prettyString;
-
+    protected $pretty_string;
     /**
      * @return bool
      */
-    public function matches(ConstraintInterface $provider)
+    public function matches(Constraint_Interface $provider)
     {
         return true;
     }
-
     /**
      * {@inheritDoc}
      */
-    public function compile($otherOperator)
+    public function compile($other_operator)
     {
         return 'true';
     }
-
     /**
      * {@inheritDoc}
      */
-    public function setPrettyString($prettyString)
+    public function set_pretty_string($pretty_string)
     {
-        $this->prettyString = $prettyString;
+        $this->pretty_string = $pretty_string;
     }
-
     /**
      * {@inheritDoc}
      */
-    public function getPrettyString()
+    public function get_pretty_string()
     {
-        if ($this->prettyString) {
-            return $this->prettyString;
+        if ($this->pretty_string) {
+            return $this->pretty_string;
         }
-
         return (string) $this;
     }
-
     /**
      * {@inheritDoc}
      */
@@ -66,19 +58,17 @@ class MatchAllConstraint implements ConstraintInterface
     {
         return '*';
     }
-
     /**
      * {@inheritDoc}
      */
-    public function getUpperBound()
+    public function get_upper_bound()
     {
-        return Bound::positiveInfinity();
+        return Bound::positive_infinity();
     }
-
     /**
      * {@inheritDoc}
      */
-    public function getLowerBound()
+    public function get_lower_bound()
     {
         return Bound::zero();
     }

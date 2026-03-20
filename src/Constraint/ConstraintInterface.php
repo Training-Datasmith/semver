@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of composer/semver.
  *
@@ -10,7 +9,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
  */
-
 namespace Composer\Semver\Constraint;
 
 /**
@@ -19,7 +17,7 @@ namespace Composer\Semver\Constraint;
  * that implements this interface is not a supported use case and will cause the
  * composer/semver components to return unexpected results.
  */
-interface ConstraintInterface
+interface Constraint_Interface
 {
     /**
      * Checks whether the given constraint intersects in any way with this constraint
@@ -27,8 +25,7 @@ interface ConstraintInterface
      *
      * @return bool
      */
-    public function matches(ConstraintInterface $provider);
-
+    public function matches(Constraint_Interface $provider);
     /**
      * Provides a compiled version of the constraint for the given operator
      * The compiled version must be a PHP expression.
@@ -45,30 +42,25 @@ interface ConstraintInterface
      *
      * @phpstan-param Constraint::OP_* $otherOperator
      */
-    public function compile($otherOperator);
-
+    public function compile($other_operator);
     /**
      * @return Bound
      */
-    public function getUpperBound();
-
+    public function get_upper_bound();
     /**
      * @return Bound
      */
-    public function getLowerBound();
-
+    public function get_lower_bound();
     /**
      * @return string
      */
-    public function getPrettyString();
-
+    public function get_pretty_string();
     /**
      * @param string|null $prettyString
      *
      * @return void
      */
-    public function setPrettyString($prettyString);
-
+    public function set_pretty_string($pretty_string);
     /**
      * @return string
      */

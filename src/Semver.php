@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /*
  * This file is part of composer/semver.
  *
@@ -10,19 +9,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
  */
-
 namespace Composer\Semver;
 
 use Composer\Semver\Constraint\Constraint;
-
 class Semver
 {
     public const SORT_ASC = 1;
     public const SORT_DESC = -1;
-
     /** @var VersionParser */
-    private static $versionParser;
-
+    private static $version_parser;
     /**
      * Determine if given version satisfies given constraints.
      *
@@ -33,17 +28,14 @@ class Semver
      */
     public static function satisfies($version, $constraints)
     {
-        if (null === self::$versionParser) {
-            self::$versionParser = new VersionParser();
+        if (null === self::$version_parser) {
+            self::$version_parser = new Version_Parser();
         }
-
-        $versionParser = self::$versionParser;
-        $provider = new Constraint('==', $versionParser->normalize($version));
-        $parsedConstraints = $versionParser->parseConstraints($constraints);
-
-        return $parsedConstraints->matches($provider);
+        $version_parser = self::$version_parser;
+        $provider = new Constraint('==', $version_parser->normalize($version));
+        $parsed_constraints = $version_parser->parse_constraints($constraints);
+        return $parsed_constraints->matches($provider);
     }
-
     /**
      * Return all versions that satisfy given constraints.
      *
@@ -52,15 +44,13 @@ class Semver
      *
      * @return list<string>
      */
-    public static function satisfiedBy(array $versions, $constraints)
+    public static function satisfied_by(array $versions, $constraints)
     {
         $versions = array_filter($versions, function ($version) use ($constraints) {
             return Semver::satisfies($version, $constraints);
         });
-
         return array_values($versions);
     }
-
     /**
      * Sort given array of versions.
      *
@@ -72,7 +62,6 @@ class Semver
     {
         return self::usort($versions, self::SORT_ASC);
     }
-
     /**
      * Sort given array of versions in reverse.
      *
@@ -84,7 +73,6 @@ class Semver
     {
         return self::usort($versions, self::SORT_DESC);
     }
-
     /**
      * @param string[] $versions
      * @param int      $direction
@@ -93,39 +81,32 @@ class Semver
      */
     private static function usort(array $versions, $direction)
     {
-        if (null === self::$versionParser) {
-            self::$versionParser = new VersionParser();
+        if (null === self::$version_parser) {
+            self::$version_parser = new Version_Parser();
         }
-
-        $versionParser = self::$versionParser;
+        $version_parser = self::$version_parser;
         $normalized = [];
-
         // Normalize outside of usort() scope for minor performance increase.
         // Creates an array of arrays: [[normalized, key], ...]
         foreach ($versions as $key => $version) {
-            $normalizedVersion = $versionParser->normalize($version);
-            $normalizedVersion = $versionParser->normalizeDefaultBranch($normalizedVersion);
-            $normalized[] = [$normalizedVersion, $key];
+            $normalized_version = $version_parser->normalize($version);
+            $normalized_version = $version_parser->normalize_default_branch($normalized_version);
+            $normalized[] = [$normalized_version, $key];
         }
-
         usort($normalized, function (array $left, array $right) use ($direction) {
             if ($left[0] === $right[0]) {
                 return 0;
             }
-
-            if (Comparator::lessThan($left[0], $right[0])) {
+            if (Comparator::less_than($left[0], $right[0])) {
                 return -$direction;
             }
-
             return $direction;
         });
-
         // Recreate input array, using the original indexes which are now in sorted order.
         $sorted = [];
         foreach ($normalized as $item) {
             $sorted[] = $versions[$item[1]];
         }
-
         return $sorted;
     }
 }
